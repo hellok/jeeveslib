@@ -1,0 +1,70 @@
+Once you have SBT, you can compile Jeeves:
+
+Run sbt update to pull in the necessary dependencies.
+Run sbt compile to compile.
+Once you installed, you can run sbt test to run the tests.
+Run the tests by running sbt test.
+Linux
+The Linux installation should be fairly straightforward as long as you are using a version of Z3 3.2 or later and either putting the binary in the /opt/z3 directory or setting your smt.home variable appropriately.
+
+Windows
+Download Scala 2.10.0.
+Download Cygwin. Make sure wget, chmod, and major defaults are installed.
+Add Cygwin to path.
+Download Z3.
+Go to http://z3.codeplex.com/
+Download the Z3 version 3.2 zip file.
+Unzip the internal z3-xxx-xx folder and store to a temporary location
+Copy/Move the contents of z3-xxx-xx from temporary download location and to Cygwin/.../opt/z3.
+Download SBT build tool, version 0.10.0 or above.
+Install Mercurial. Recommended to use the msi that "needs admin rights to install," InnoSetup, or TortoiseHg.
+Use Cygwin to navigate to the jeeveslib
+Mac
+These instructions are for OSX 10.7+.
+
+Install Wine using MacPorts
+Prerequisites:
+Apple Xcode/XQuartz After installation be sure to install command line tools: go to Xcode -> Preferences -> Downloads.
+Java Development Package (Detailed Instructions)
+Install MacPorts by downloading the compatible ".dmg" package.
+Configure MacPorts:
+Open a terminal and copy paste the following code into it:
+echo export PATH=/opt/local/bin:/opt/local/sbin:\$PATH$'\n'export MANPATH=/opt/local/man:\$MANPATH | sudo tee -a /etc/profile
+If MacPorts was installed properly then you should see as a response the following code; if not then the Admin Account does not have a password set which is required.
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+export MANPATH=/opt/local/man:$MANPATH
+Next, run the following command:
+if [ `sysctl -n hw.cpu64bit_capable` -eq 1 ] ; then echo "+universal" | sudo tee -a /opt/local/etc/macports/variants.conf; else echo "not 64bit capable"; fi
+The terminal should respond with +universal.
+Next, run the following code to accept the Xcode license:
+sudo xcodebuild -license
+Quit and reopen the terminal.
+Install Wine using MacPorts:
+This part will can take a really long time depending on the speed of your computer. It will take approximately 1-2 hours, so you can walk away and do something else in the meantime; eat, play video game, read, etc. Note: if after running the following command, Terminal complains about not finding 'make' then you probably did not install Xcode/XQuartz properly and should refer to step 1.2.
+sudo xcodebuild -license
+Run the following two commands to ensure the D-Bus is running properly:
+sudo launchctl load -w /Library/LaunchDaemons/org.freedesktop.dbus-system.plist
+launchctl load -w /Library/LaunchAgents/org.freedesktop.dbus-session.plist
+Reference for previous installation Instructions: http://www.davidbaumgold.com/tutorials/wine-mac/#what-is
+Installing Z3 SMT Solver for Mac OSX:
+Navigate to http://research.microsoft.com/en-us/um/redmond/projects/z3/old/older_z3.html and download the preferred ".msi" file.
+Open Terminal, if it is not already, and move the file from Downloads/ to your desired directory and use the msiexec wine command to install z3.
+wine msiexec name_of_file.msi
+Create executable:
+If you have not already, make a ~/opt/z3/bin/ directory and cd into it.
+With your preferred editor, open a new file and name it z3.
+Inside, paste the following instructions:
+args=`echo $* | sed -e 's|/|\\\|g'`
+export WINEDEBUG=fixme-all
+exec wine ~/.wine/drive_c/bin/z3.exe $args
+Type chmod a+x z3 in order to make the file executable by all users, groups and others.
+Test that z3 was correctly installed by checking ./z3 -version.
+MacPort Mercurial & sbt:
+sbt:
+sudo port install sbt
+Mercurial:
+sudo port install mercurial +bash_completion
+If these two options do not work properly than you can download Homebrew and install mercurial and sbt with the following commands:
+brew update
+brew install sbt
+brew install mercurial
